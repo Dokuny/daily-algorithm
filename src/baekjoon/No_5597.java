@@ -17,7 +17,6 @@ public class No_5597 {
         for (int i = 1; i < arr.length; i++) {
             if(!arr[i]) sb.append(i).append("\n");
         }
-
         System.out.println(sb);
     }
 }
