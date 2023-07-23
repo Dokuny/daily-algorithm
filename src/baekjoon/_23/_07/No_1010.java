@@ -6,7 +6,8 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /**
- * 23.07.21
+ * 23.07.23
+ * 이항계수 DP로 푸는 문제
  */
 public class No_1010 {
 
@@ -19,32 +20,35 @@ public class No_1010 {
 
 		StringBuilder sb = new StringBuilder();
 
+		long[][] dp = new long[30][30];
+
+		for (int i = 0; i < 30; i++) {
+			for (int j = 0; j <= i; j++) {
+				if (j == 0 || i == j) {
+					dp[i][j] = 1L;
+				} else {
+					dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+				}
+			}
+		}
+
 		for (int i = 0; i < T; i++) {
 			st = new StringTokenizer(br.readLine());
 
 			int N = Integer.parseInt(st.nextToken());
 			int M = Integer.parseInt(st.nextToken());
 
-			long up = 1;
-			for (int j = M; j > N ; j--) {
-				up *= j;
+			if (N < M) {
+				int temp = N;
+				N = M;
+				M = temp;
 			}
 
-			for (int j = M - N; j >= 1; j--) {
-				up /= j;
-			}
-
-			sb.append(up)
+			sb.append(dp[N][M])
 				.append("\n");
 		}
 
-		// nCr
-		// n! / (n-r)! r! = k
-
-
 		System.out.println(sb);
-
-
 	}
 
 }
