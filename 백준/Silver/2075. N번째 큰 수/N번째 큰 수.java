@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * 23.07.26
@@ -16,18 +14,21 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        ArrayList<Integer> list = new ArrayList<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
         StringTokenizer st;
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
-                list.add(Integer.parseInt(st.nextToken()));
+                pq.add(Integer.parseInt(st.nextToken()));
             }
         }
 
-        Collections.sort(list);
-
-        System.out.println(list.get(list.size() - N));
+        int answer = Integer.MAX_VALUE;
+        for (int i = 0; i < N; i++) {
+            answer = pq.poll();
+        }
+        
+        System.out.println(answer);
     }
 }
