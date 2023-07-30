@@ -35,35 +35,39 @@ public class Main {
 
 				// 익은 토마토들부터 BFS를 시작해야하므로 넣어주기
 				if (box[i][j] == 1) {
-					queue.add(new Cell(j, i, 0));
+					queue.add(new Cell(j, i));
 				}
 
-				if(box[i][j] != 0) baby--;
+				if (box[i][j] != 0) {
+					baby--;
+				}
 			}
 		}
 
-		int depth = 0;
+		Cell cur = new Cell(0, 0);
+
 		while (!queue.isEmpty()) {
 			// 토마토 꺼내오기
-			Cell cur = queue.poll();
-
+			cur = queue.poll();
 
 			for (int i = 0; i < 4; i++) {
-				// 이동할 상자 계싼
+				// 이동할 상자 계산
 				int nextX = cur.x + moveX[i];
 				int nextY = cur.y + moveY[i];
 
 				// 상자 밖을 벗어나는지 확인
-				if(nextX < 0 || nextY < 0 || nextX >= N || nextY >= M) continue;
+				if (nextX < 0 || nextY < 0 || nextX >= N || nextY >= M) {
+					continue;
+				}
 				// 상태가 좋은 토마토인지 확인
-				if (box[nextY][nextX] != 0) continue;
+				if (box[nextY][nextX] != 0) {
+					continue;
+				}
 
 				// 토마토 완숙 처리
-				box[nextY][nextX] = 1;
-				// bfs 깊이 체크
-				depth = Math.max(depth, cur.depth + 1);
+				box[nextY][nextX] = box[cur.y][cur.x] + 1;
 				// 완숙 토마토 큐에 집어넣기
-				queue.add(new Cell(cur.x + moveX[i], cur.y + moveY[i], cur.depth + 1));
+				queue.add(new Cell(nextX, nextY));
 				baby--;
 			}
 		}
@@ -71,7 +75,7 @@ public class Main {
 		if (baby != 0) {
 			System.out.println(-1);
 		} else {
-			System.out.println(depth);
+			System.out.println(box[cur.y][cur.x] - 1);
 		}
 	}
 
@@ -79,12 +83,10 @@ public class Main {
 
 		int x;
 		int y;
-		int depth;
 
-		public Cell(int x, int y, int depth) {
+		public Cell(int x, int y) {
 			this.x = x;
 			this.y = y;
-			this.depth = depth;
 		}
 	}
 
