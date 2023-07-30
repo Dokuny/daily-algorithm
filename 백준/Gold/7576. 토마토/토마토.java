@@ -25,7 +25,7 @@ public class Main {
 		int[][] box = new int[M][N];
 
 		// BFS를 위한 Queue
-		Queue<Cell> queue = new LinkedList<>();
+		Queue<int[]> queue = new LinkedList<>();
 
 		int baby = N * M;
 		for (int i = 0; i < M; i++) {
@@ -35,7 +35,7 @@ public class Main {
 
 				// 익은 토마토들부터 BFS를 시작해야하므로 넣어주기
 				if (box[i][j] == 1) {
-					queue.add(new Cell(j, i));
+					queue.add(new int[]{j, i});
 				}
 
 				if (box[i][j] != 0) {
@@ -44,7 +44,7 @@ public class Main {
 			}
 		}
 
-		Cell cur = new Cell(0, 0);
+		int[] cur = new int[]{0, 0};
 
 		while (!queue.isEmpty()) {
 			// 토마토 꺼내오기
@@ -52,8 +52,8 @@ public class Main {
 
 			for (int i = 0; i < 4; i++) {
 				// 이동할 상자 계산
-				int nextX = cur.x + moveX[i];
-				int nextY = cur.y + moveY[i];
+				int nextX = cur[0] + moveX[i];
+				int nextY = cur[1] + moveY[i];
 
 				// 상자 밖을 벗어나는지 확인
 				if (nextX < 0 || nextY < 0 || nextX >= N || nextY >= M) {
@@ -65,9 +65,9 @@ public class Main {
 				}
 
 				// 토마토 완숙 처리
-				box[nextY][nextX] = box[cur.y][cur.x] + 1;
+				box[nextY][nextX] = box[cur[1]][cur[0]] + 1;
 				// 완숙 토마토 큐에 집어넣기
-				queue.add(new Cell(nextX, nextY));
+				queue.add(new int[]{nextX,nextY});
 				baby--;
 			}
 		}
@@ -75,7 +75,7 @@ public class Main {
 		if (baby != 0) {
 			System.out.println(-1);
 		} else {
-			System.out.println(box[cur.y][cur.x] - 1);
+			System.out.println(box[cur[1]][cur[0]] - 1);
 		}
 	}
 
