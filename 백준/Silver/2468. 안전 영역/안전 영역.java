@@ -33,7 +33,9 @@ public class Main {
 
 		int max = 0;
 		for (int i = 0; i <= 100; i++) {
-			max = Math.max(max, bfs(i));
+			int num = bfs(i);
+			if(num == 0) break;
+			max = Math.max(max, num);
 		}
 
 		System.out.println(max);
