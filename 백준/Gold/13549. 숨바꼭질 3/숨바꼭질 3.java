@@ -16,7 +16,7 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        int[] arr = new int[150001];
+        int[] arr = new int[100001];
 
         ArrayDeque<Node> queue = new ArrayDeque<>();
 
