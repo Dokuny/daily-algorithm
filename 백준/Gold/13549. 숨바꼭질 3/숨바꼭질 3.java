@@ -16,7 +16,12 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        int[] arr = new int[100001];
+        if (N >= K) {
+            System.out.println(N - K);
+            return;
+        }
+
+        int[] arr = new int[K+2];
 
         ArrayDeque<Node> queue = new ArrayDeque<>();
 
@@ -27,10 +32,12 @@ public class Main {
         while (!queue.isEmpty()) {
             Node cur = queue.poll();
 
+            // 이미 저장된 값이 더 작으면 굳이 더 할 필요가 없음
             if(arr[cur.x] <= cur.time) continue;
 
             arr[cur.x] = cur.time;
 
+            // 세가지 경우의 수를 BFS
             if (cur.x - 1 >= 0) {
                 queue.add(new Node(cur.x - 1, cur.time + 1));
             }
