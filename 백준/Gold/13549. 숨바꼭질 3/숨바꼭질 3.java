@@ -16,8 +16,7 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        int big = 200000;
-        int[] arr = new int[200001];
+        int[] arr = new int[150001];
 
         ArrayDeque<Node> queue = new ArrayDeque<>();
 
@@ -25,7 +24,6 @@ public class Main {
 
         queue.add(new Node(N, 0));
 
-        int min = Integer.MAX_VALUE;
         while (!queue.isEmpty()) {
             Node cur = queue.poll();
 
@@ -37,11 +35,11 @@ public class Main {
                 queue.add(new Node(cur.x - 1, cur.time + 1));
             }
 
-            if (cur.x + 1 <= big) {
+            if (cur.x + 1 < arr.length) {
                 queue.add(new Node(cur.x + 1, cur.time + 1));
             }
 
-            if (cur.x * 2 <= big) {
+            if (cur.x * 2 < arr.length) {
                 queue.add(new Node(cur.x * 2, cur.time));
             }
         }
