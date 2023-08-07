@@ -1,33 +1,35 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 
     static int N;
-    static boolean[][] map;
+    static char[][] map;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         N = Integer.parseInt(br.readLine());
-        map = new boolean[N][N * 2 - 1];
+        map = new char[N][N * 2 - 1];
+
+        for (int i = 0; i < N; i++) {
+            Arrays.fill(map[i], ' ');
+        }
 
         recur(map[0].length/2, 0, N);
 
-        StringBuilder sb = new StringBuilder();
 
-        for (boolean[] stars : map) {
-            for (boolean star : stars) {
-                sb.append(star ? '*' : ' ');
-            }
-            sb.append("\n");
+        for (char[] stars : map) {
+            bw.write(stars);
+            bw.write("\n");
         }
-        System.out.println(sb);
-
+        bw.flush();
+        bw.close();
+        br.close();
     }
 
     public static void recur(int x, int y, int size) {
@@ -48,12 +50,12 @@ public class Main {
     }
 
     public static void star(int x, int y) {
-        map[y][x] = true;
-        map[y + 1][x - 1] = true;
-        map[y + 1][x + 1] = true;
+        map[y][x] = '*';
+        map[y + 1][x - 1] = '*';
+        map[y + 1][x + 1] = '*';
 
         for (int i = x - 2; i <= x + 2; i++) {
-            map[y + 2][i] = true;
+            map[y + 2][i] = '*';
         }
     }
 }
