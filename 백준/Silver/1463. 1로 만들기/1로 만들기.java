@@ -15,47 +15,16 @@ public class Main {
 
         X = Integer.parseInt(br.readLine());
 
-        dp = new int[X + 1];
-        Arrays.fill(dp,Integer.MAX_VALUE);
-
-
-        Queue<Node> queue = new ArrayDeque<>();
-
-        queue.add(new Node(1, 0));
-
-        while (!queue.isEmpty()) {
-            Node cur = queue.poll();
-
-            if(dp[cur.num] <= cur.cnt) continue;
-
-            dp[cur.num] = cur.cnt;
-
-            if (cur.num * 3 <= X){
-                queue.add(new Node(cur.num * 3, cur.cnt + 1));
-            }
-            if (cur.num * 2 <= X) {
-                queue.add(new Node(cur.num * 2, cur.cnt+1));
-            }
-            if (cur.num + 1 <= X) {
-                queue.add(new Node(cur.num + 1, cur.cnt + 1));
-            }
-        }
-
-        System.out.println(dp[X]);
+        System.out.println(recur(X,0));
 
     }
 
-
-    static class Node{
-        int num;
-        int cnt;
-
-        public Node(int num, int cnt) {
-            this.num = num;
-            this.cnt = cnt;
+    static int recur(int n, int cnt) {
+        if (n <= 1) {
+            return cnt;
         }
+
+        return Math.min(recur(n/2,cnt+1+(n%2)), recur(n/3,cnt+1+(n%3)));
     }
-
-
-
+    
 }
