@@ -37,22 +37,23 @@ class Solution {
             }
 
             answer = Integer.MAX_VALUE;
+
             // dfs
             dfs(0, 0);
 
             sb.append("#").append(test_case).append(" ").append(answer).append("\n");
-            
+
         }
         System.out.println(sb);
     }
 
     public static void dfs(int curRow, int cnt) {
+        if (cnt >= answer) return;
         if (curRow == row) {
-            if (answer > cnt) {
-                if (validate()) {
-                    answer = cnt;
-                }
+            if (validate()) {
+                answer = cnt;
             }
+            
             return;
         }
 
