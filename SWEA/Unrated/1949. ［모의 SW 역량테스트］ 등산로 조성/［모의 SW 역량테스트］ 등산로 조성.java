@@ -33,7 +33,9 @@ class Solution {
                 st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < N; j++) {
                     map[i][j] = Integer.parseInt(st.nextToken());
-                    max = Math.max(max, map[i][j]);
+                    if (map[i][j] > max) {
+                        max = map[i][j];
+                    }
                 }
             }
 
@@ -63,7 +65,7 @@ class Solution {
             for (int[][] arr : list) {
 
                 Queue<Pos> queue = new ArrayDeque<>();
-                
+
                 for (int i = 0; i < N; i++) {
                     for (int j = 0; j < N; j++) {
                         if (max == arr[i][j]) {
