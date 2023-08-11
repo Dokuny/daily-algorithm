@@ -6,11 +6,10 @@ import java.util.*;
 public class Main {
 
     static int[][] dirs = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
-    static Pos[] selected;
+    static int[] selected;
     static int M;
     static int N;
     static ArrayList<Pos> chickenList;
-    static ArrayList<Pos> houseList;
 
     static boolean[] chickenVisited;
     static int[][] map;
@@ -31,8 +30,7 @@ public class Main {
 
         // 치킨집들 위치
         chickenList = new ArrayList<>();
-        houseList = new ArrayList<>();
-        selected = new Pos[M];
+        selected = new int[M];
         answer = Integer.MAX_VALUE;
 
         // 지도 만들기
@@ -41,7 +39,6 @@ public class Main {
             for (int j = 0; j < N; j++) {
                 int num = Integer.parseInt(st.nextToken());
                 if (num == 2) chickenList.add(new Pos(j, i, 0));
-                if(num == 1) houseList.add(new Pos(j, i, 0));
                 map[i][j] = num;
             }
         }
@@ -59,23 +56,23 @@ public class Main {
         if (depth == M) {
             // 점수 구하기 -> BFS
             Queue<Pos> queue = new ArrayDeque<>();
-            int[][] point = new int[N][N];
-            for (int i = 0; i < N; i++) {
-                Arrays.fill(point[i], Integer.MAX_VALUE);
-            }
-
+            boolean[][] visited = new boolean[N][N];
 
             // 선택된 치킨집부터 BFS 시작
-            for (Pos chicken : selected) {
-                queue.add(chicken);
+            for (int idx : selected) {
+                queue.add(chickenList.get(idx));
             }
+            int sum = 0;
 
             while (!queue.isEmpty()) {
                 Pos cur = queue.poll();
 
-                if (point[cur.y][cur.x] <= cur.cnt) continue;
+                if (visited[cur.y][cur.x]) continue;
+                if (map[cur.y][cur.x] == 1) {
+                    sum += cur.cnt;
+                }
 
-                point[cur.y][cur.x] = cur.cnt;
+                visited[cur.y][cur.x] = true;
 
                 // 사방 탐색
                 for (int[] dir : dirs) {
@@ -85,14 +82,10 @@ public class Main {
                     // 배열 밖을 넘어가는지
                     if (mX < 0 || mY < 0 || mX >= N || mY >= N) continue;
                     // 이미 체크된 값이 더 작은지
-                    if (point[mY][mX] <= cur.cnt + 1) continue;
+                    if (visited[mY][mX]) continue;
 
                     queue.add(new Pos(mX, mY, cur.cnt + 1));
                 }
-            }
-            int sum = 0;
-            for (Pos house : houseList) {
-                sum += point[house.y][house.x];
             }
 
             answer = Math.min(answer, sum);
@@ -104,14 +97,11 @@ public class Main {
         for (int i = prev + 1; i < chickenList.size(); i++) {
             if (chickenVisited[i]) continue;
             chickenVisited[i] = true;
-            selected[depth] = chickenList.get(i);
+            selected[depth] = i;
             comb(depth + 1, i);
             chickenVisited[i] = false;
         }
     }
-
-    // 조합
-    // BFS
 
     static class Pos {
         int x;
