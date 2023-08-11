@@ -1,57 +1,56 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Main {
+
+    static int K;
+    static int N;
+
+    static int[] wires;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int K = Integer.parseInt(st.nextToken());
-        int N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
 
-        int[] wires = new int[K];
+        wires = new int[K];
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-
+        // 최대값 구하기
+        long right = Integer.MIN_VALUE;
         for (int i = 0; i < K; i++) {
             wires[i] = Integer.parseInt(br.readLine());
-            pq.add(wires[i]);
+            right = Math.max(right, wires[i]);
         }
 
-        int length = 0;
-        while (!pq.isEmpty()) {
-            length = pq.poll();
+        right++;
 
-            int cnt = 0;
+        long left = 0;
+
+        while (left < right) {
+
+            long mid = (right + left) / 2;
+
+            long cnt = 0;
+
             for (int wire : wires) {
-                cnt += wire / length;
+                cnt += wire / mid;
             }
-            if (cnt >= N) {
-                break;
+
+            if (cnt < N) {
+                right = mid;
             } else {
-                pq.add(length / 2);
+                left = mid + 1;
+
             }
         }
 
-        for (int i = length+1; true; i++) {
-
-            int cnt = 0;
-            for (int wire : wires) {
-                cnt += wire / i;
-            }
-            if (cnt >= N) {
-                length = i;
-            } else {
-                System.out.println(length);
-                return;
-            }
-        }
+        System.out.println(right - 1);
 
     }
-
 
 }
 
