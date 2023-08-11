@@ -10,6 +10,7 @@ public class Main {
     static int M;
     static int N;
     static ArrayList<Pos> chickenList;
+    static ArrayList<Pos> houseList;
 
     static boolean[] chickenVisited;
     static int[][] map;
@@ -30,6 +31,7 @@ public class Main {
 
         // 치킨집들 위치
         chickenList = new ArrayList<>();
+        houseList = new ArrayList<>();
         selected = new int[M];
         answer = Integer.MAX_VALUE;
 
@@ -38,7 +40,8 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 int num = Integer.parseInt(st.nextToken());
-                if (num == 2) chickenList.add(new Pos(j, i, 0));
+                if (num == 2) chickenList.add(new Pos(j, i));
+                if(num == 1) houseList.add(new Pos(j, i));
                 map[i][j] = num;
             }
         }
@@ -54,38 +57,23 @@ public class Main {
     public static void comb(int depth, int prev) {
         // 치킨집 M개를 다 선택했다면
         if (depth == M) {
-            // 점수 구하기 -> BFS
-            Queue<Pos> queue = new ArrayDeque<>();
-            boolean[][] visited = new boolean[N][N];
 
-            // 선택된 치킨집부터 BFS 시작
-            for (int idx : selected) {
-                queue.add(chickenList.get(idx));
+            // 치킨집 -> 가정집 점수 구하기 (맨해튼 거리)
+            int[] housePoint = new int[houseList.size()];
+            Arrays.fill(housePoint, Integer.MAX_VALUE);
+
+            for (int i = 0; i < selected.length; i++) {
+                Pos chicken = chickenList.get(selected[i]);
+                for (int j = 0; j < houseList.size(); j++) {
+                    Pos house = houseList.get(j);
+                    housePoint[j] = Math.min(housePoint[j], Math.abs(chicken.x - house.x) + Math.abs(chicken.y - house.y));
+                }
             }
+
             int sum = 0;
 
-            while (!queue.isEmpty()) {
-                Pos cur = queue.poll();
-
-                if (visited[cur.y][cur.x]) continue;
-                if (map[cur.y][cur.x] == 1) {
-                    sum += cur.cnt;
-                }
-
-                visited[cur.y][cur.x] = true;
-
-                // 사방 탐색
-                for (int[] dir : dirs) {
-                    int mX = dir[0] + cur.x;
-                    int mY = dir[1] + cur.y;
-
-                    // 배열 밖을 넘어가는지
-                    if (mX < 0 || mY < 0 || mX >= N || mY >= N) continue;
-                    // 이미 체크된 값이 더 작은지
-                    if (visited[mY][mX]) continue;
-
-                    queue.add(new Pos(mX, mY, cur.cnt + 1));
-                }
+            for (int i = 0; i < housePoint.length; i++) {
+                sum += housePoint[i];
             }
 
             answer = Math.min(answer, sum);
@@ -106,12 +94,10 @@ public class Main {
     static class Pos {
         int x;
         int y;
-        int cnt;
 
-        public Pos(int x, int y, int cnt) {
+        public Pos(int x, int y) {
             this.x = x;
             this.y = y;
-            this.cnt = cnt;
         }
     }
 }
