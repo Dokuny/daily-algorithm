@@ -8,6 +8,7 @@ public class Main {
     static int[][] dirs = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     static int[][] map;
     static int N;
+    static int ans;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -15,14 +16,13 @@ public class Main {
         N = Integer.parseInt(br.readLine());
 
         map = new int[N][N];
+        ans = 0;
 
         StringTokenizer st;
-        int sum = 0;
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
-                sum += map[i][j];
             }
         }
 
@@ -45,16 +45,16 @@ public class Main {
 
             switch (direction) {
                 case 0:
-                    queue.add(new Tornado(x, y, 'L'));
+                    new Tornado(x, y, 'L').spin();
                     break;
                 case 1:
-                    queue.add(new Tornado(x, y, 'D'));
+                    new Tornado(x, y, 'D').spin();
                     break;
                 case 2:
-                    queue.add(new Tornado(x, y, 'R'));
+                    new Tornado(x, y, 'R').spin();
                     break;
                 case 3:
-                    queue.add(new Tornado(x, y, 'U'));
+                    new Tornado(x, y, 'U').spin();
                     break;
             }
 
@@ -71,17 +71,7 @@ public class Main {
             }
         }
 
-        while (!queue.isEmpty()) {
-            queue.poll().spin();
-        }
-
-        int curSum = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                curSum += map[i][j];
-            }
-        }
-        System.out.println(sum - curSum);
+        System.out.println(ans);
     }
 
     static class Tornado {
@@ -118,16 +108,16 @@ public class Main {
             // 10개 좌표
             ArrayList<Pos> list = new ArrayList<>();
 
-            list.add(new Pos(x, y - 1, (int) (map[y][x]  * 0.07 )));
-            list.add(new Pos(x, y - 2, (int) (map[y][x]  * 0.02 )));
-            list.add(new Pos(x, y + 1, (int) (map[y][x]  * 0.07 )));
-            list.add(new Pos(x, y + 2, (int) (map[y][x]  * 0.02 )));
-            list.add(new Pos(x + 1, y - 1, (int) (map[y][x]  * 0.01 )));
-            list.add(new Pos(x + 1, y + 1, (int) (map[y][x]  * 0.01 )));
-            list.add(new Pos(x - 1, y - 1, (int) (map[y][x]  * 0.1 )));
-            list.add(new Pos(x - 1, y + 1, (int) (map[y][x]  * 0.1 )));
-            list.add(new Pos(x - 2, y, (int) (map[y][x]  * 0.05 )));
-            list.add(new Pos(x - 1, y, (int) (map[y][x]  * 0.55 )));
+            list.add(new Pos(x, y - 1, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x, y - 2, (int) (map[y][x] * 0.02)));
+            list.add(new Pos(x, y + 1, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x, y + 2, (int) (map[y][x] * 0.02)));
+            list.add(new Pos(x + 1, y - 1, (int) (map[y][x] * 0.01)));
+            list.add(new Pos(x + 1, y + 1, (int) (map[y][x] * 0.01)));
+            list.add(new Pos(x - 1, y - 1, (int) (map[y][x] * 0.1)));
+            list.add(new Pos(x - 1, y + 1, (int) (map[y][x] * 0.1)));
+            list.add(new Pos(x - 2, y, (int) (map[y][x] * 0.05)));
+            list.add(new Pos(x - 1, y, (int) (map[y][x] * 0.55)));
 
             moveSand(list);
         }
@@ -170,13 +160,13 @@ public class Main {
         private void uSpin() {
             ArrayList<Pos> list = new ArrayList<>();
 
-            list.add(new Pos(x - 1, y + 1, (int) (map[y][x]* 0.01)));
-            list.add(new Pos(x + 1, y + 1, (int) (map[y][x]* 0.01)));
+            list.add(new Pos(x - 1, y + 1, (int) (map[y][x] * 0.01)));
+            list.add(new Pos(x + 1, y + 1, (int) (map[y][x] * 0.01)));
             list.add(new Pos(x - 1, y, (int) (map[y][x] * 0.07)));
-            list.add(new Pos(x - 2, y, (int) (map[y][x]* 0.02)));
+            list.add(new Pos(x - 2, y, (int) (map[y][x] * 0.02)));
             list.add(new Pos(x + 1, y, (int) (map[y][x] * 0.07)));
             list.add(new Pos(x + 2, y, (int) (map[y][x] * 0.02)));
-            list.add(new Pos(x - 1, y - 1, (int) (map[y][x]* 0.1)));
+            list.add(new Pos(x - 1, y - 1, (int) (map[y][x] * 0.1)));
             list.add(new Pos(x + 1, y - 1, (int) (map[y][x] * 0.1)));
             list.add(new Pos(x, y - 2, (int) (map[y][x] * 0.05)));
             list.add(new Pos(x, y - 1, (int) (map[y][x] * 0.55)));
@@ -191,7 +181,11 @@ public class Main {
             for (int i = 0; i < list.size(); i++) {
                 Pos pos = list.get(i);
                 sum += pos.sand;
-                if (pos.x < 0 || pos.y < 0 || pos.x >= N || pos.y >= N) continue;
+                if (pos.x < 0 || pos.y < 0 || pos.x >= N || pos.y >= N) {
+                    ans += pos.sand;
+                    continue;
+                }
+
                 map[pos.y][pos.x] += pos.sand;
 
             }
@@ -199,6 +193,8 @@ public class Main {
             Pos pos = list.get(list.size() - 1);
             if (pos.x >= 0 && pos.y >= 0 && pos.x < N && pos.y < N) {
                 map[pos.y][pos.x] += map[y][x] - sum;
+            } else {
+                ans += map[y][x] - sum;
             }
             map[y][x] = 0;
         }
