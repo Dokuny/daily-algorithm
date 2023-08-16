@@ -118,16 +118,16 @@ public class Main {
             // 10개 좌표
             ArrayList<Pos> list = new ArrayList<>();
 
-            list.add(new Pos(x, y - 1, (int) (map[y][x] * 100 * 0.07 / 100)));
-            list.add(new Pos(x, y - 2, (int) (map[y][x] * 100 * 0.02 / 100)));
-            list.add(new Pos(x, y + 1, (int) (map[y][x] * 100 * 0.07 / 100)));
-            list.add(new Pos(x, y + 2, (int) (map[y][x] * 100 * 0.02 / 100)));
-            list.add(new Pos(x + 1, y - 1, (int) (map[y][x] * 100 * 0.01 / 100)));
-            list.add(new Pos(x + 1, y + 1, (int) (map[y][x] * 100 * 0.01 / 100)));
-            list.add(new Pos(x - 1, y - 1, (int) (map[y][x] * 100 * 0.1 / 100)));
-            list.add(new Pos(x - 1, y + 1, (int) (map[y][x] * 100 * 0.1 / 100)));
-            list.add(new Pos(x - 2, y, (int) (map[y][x] * 100 * 0.05 / 100)));
-            list.add(new Pos(x - 1, y, (int) (map[y][x] * 100 * 0.55 / 100)));
+            list.add(new Pos(x, y - 1, (int) (map[y][x]  * 0.07 )));
+            list.add(new Pos(x, y - 2, (int) (map[y][x]  * 0.02 )));
+            list.add(new Pos(x, y + 1, (int) (map[y][x]  * 0.07 )));
+            list.add(new Pos(x, y + 2, (int) (map[y][x]  * 0.02 )));
+            list.add(new Pos(x + 1, y - 1, (int) (map[y][x]  * 0.01 )));
+            list.add(new Pos(x + 1, y + 1, (int) (map[y][x]  * 0.01 )));
+            list.add(new Pos(x - 1, y - 1, (int) (map[y][x]  * 0.1 )));
+            list.add(new Pos(x - 1, y + 1, (int) (map[y][x]  * 0.1 )));
+            list.add(new Pos(x - 2, y, (int) (map[y][x]  * 0.05 )));
+            list.add(new Pos(x - 1, y, (int) (map[y][x]  * 0.55 )));
 
             moveSand(list);
         }
@@ -136,16 +136,16 @@ public class Main {
         private void dSpin() {
             ArrayList<Pos> list = new ArrayList<>();
 
-            list.add(new Pos(x - 1, y - 1, (int) (map[y][x]* 100 * 0.01/100)));
-            list.add(new Pos(x + 1, y - 1, (int) (map[y][x]* 100 * 0.01/100)));
-            list.add(new Pos(x - 1, y, (int) (map[y][x]* 100 * 0.07/100)));
-            list.add(new Pos(x - 2, y, (int) (map[y][x]* 100 * 0.02/100)));
-            list.add(new Pos(x + 1, y, (int) (map[y][x]* 100 * 0.07/100)));
-            list.add(new Pos(x + 2, y, (int) (map[y][x]* 100 * 0.02/100)));
-            list.add(new Pos(x - 1, y + 1, (int) (map[y][x]* 100 * 0.1/100)));
-            list.add(new Pos(x + 1, y + 1, (int) (map[y][x]* 100 * 0.1/100)));
-            list.add(new Pos(x, y + 2, (int) (map[y][x]* 100 * 0.05/100)));
-            list.add(new Pos(x, y + 1, (int) (map[y][x]* 100 * 0.55/100)));
+            list.add(new Pos(x - 1, y - 1, (int) (map[y][x] * 0.01)));
+            list.add(new Pos(x + 1, y - 1, (int) (map[y][x] * 0.01)));
+            list.add(new Pos(x - 1, y, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x - 2, y, (int) (map[y][x] * 0.02)));
+            list.add(new Pos(x + 1, y, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x + 2, y, (int) (map[y][x] * 0.02)));
+            list.add(new Pos(x - 1, y + 1, (int) (map[y][x] * 0.1)));
+            list.add(new Pos(x + 1, y + 1, (int) (map[y][x] * 0.1)));
+            list.add(new Pos(x, y + 2, (int) (map[y][x] * 0.05)));
+            list.add(new Pos(x, y + 1, (int) (map[y][x] * 0.55)));
 
             moveSand(list);
         }
@@ -153,16 +153,16 @@ public class Main {
         private void rSpin() {
             ArrayList<Pos> list = new ArrayList<>();
 
-            list.add(new Pos(x - 1, y - 1, (int) (map[y][x]* 100 * 0.01/100)));
-            list.add(new Pos(x - 1, y + 1, (int) (map[y][x]* 100 * 0.01/100)));
-            list.add(new Pos(x, y - 1, (int) (map[y][x]* 100 * 0.07/100)));
-            list.add(new Pos(x, y - 2, (int) (map[y][x]* 100 * 0.02/100)));
-            list.add(new Pos(x, y + 1, (int) (map[y][x]* 100 * 0.07/100)));
-            list.add(new Pos(x, y + 2, (int) (map[y][x]* 100 * 0.02/100)));
-            list.add(new Pos(x + 1, y - 1, (int) (map[y][x]* 100 * 0.1/100)));
-            list.add(new Pos(x + 1, y + 1, (int) (map[y][x] * 100* 0.1/100)));
-            list.add(new Pos(x + 2, y, (int) (map[y][x]* 100 * 0.05/100)));
-            list.add(new Pos(x + 1, y, (int) (map[y][x]* 100 * 0.55/100)));
+            list.add(new Pos(x - 1, y - 1, (int) (map[y][x] * 0.01)));
+            list.add(new Pos(x - 1, y + 1, (int) (map[y][x] * 0.01)));
+            list.add(new Pos(x, y - 1, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x, y - 2, (int) (map[y][x] * 0.02)));
+            list.add(new Pos(x, y + 1, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x, y + 2, (int) (map[y][x] * 0.02)));
+            list.add(new Pos(x + 1, y - 1, (int) (map[y][x] * 0.1)));
+            list.add(new Pos(x + 1, y + 1, (int) (map[y][x] * 0.1)));
+            list.add(new Pos(x + 2, y, (int) (map[y][x] * 0.05)));
+            list.add(new Pos(x + 1, y, (int) (map[y][x] * 0.55)));
 
             moveSand(list);
         }
@@ -170,16 +170,16 @@ public class Main {
         private void uSpin() {
             ArrayList<Pos> list = new ArrayList<>();
 
-            list.add(new Pos(x - 1, y + 1, (int) (map[y][x]* 100 * 0.01/100)));
-            list.add(new Pos(x + 1, y + 1, (int) (map[y][x]* 100 * 0.01/100)));
-            list.add(new Pos(x - 1, y, (int) (map[y][x]* 100 * 0.07/100)));
-            list.add(new Pos(x - 2, y, (int) (map[y][x]* 100 * 0.02/100)));
-            list.add(new Pos(x + 1, y, (int) (map[y][x]* 100 * 0.07/100)));
-            list.add(new Pos(x + 2, y, (int) (map[y][x]* 100 * 0.02/100)));
-            list.add(new Pos(x - 1, y - 1, (int) (map[y][x] * 100* 0.1/100)));
-            list.add(new Pos(x + 1, y - 1, (int) (map[y][x]* 100 * 0.1/100)));
-            list.add(new Pos(x, y - 2, (int) (map[y][x]* 100 * 0.05/100)));
-            list.add(new Pos(x, y - 1, (int) (map[y][x]* 100 * 0.55/100)));
+            list.add(new Pos(x - 1, y + 1, (int) (map[y][x]* 0.01)));
+            list.add(new Pos(x + 1, y + 1, (int) (map[y][x]* 0.01)));
+            list.add(new Pos(x - 1, y, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x - 2, y, (int) (map[y][x]* 0.02)));
+            list.add(new Pos(x + 1, y, (int) (map[y][x] * 0.07)));
+            list.add(new Pos(x + 2, y, (int) (map[y][x] * 0.02)));
+            list.add(new Pos(x - 1, y - 1, (int) (map[y][x]* 0.1)));
+            list.add(new Pos(x + 1, y - 1, (int) (map[y][x] * 0.1)));
+            list.add(new Pos(x, y - 2, (int) (map[y][x] * 0.05)));
+            list.add(new Pos(x, y - 1, (int) (map[y][x] * 0.55)));
 
             moveSand(list);
         }
