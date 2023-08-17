@@ -9,7 +9,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int N = Integer.parseInt(st.nextToken());
@@ -25,12 +24,9 @@ public class Main {
             }
         }
 
-        // 누적합 필요
-
         int[] dp = new int[257];
         Arrays.fill(dp, Integer.MAX_VALUE);
 
-        // 높이별 시간 계산
         for (int i = 0; i <= 256; i++) {
 
             int block = B;
@@ -66,8 +62,6 @@ public class Main {
         }
 
         System.out.println(dp[maxIdx]+ " " + maxIdx);
-
-
     }
 }
 
