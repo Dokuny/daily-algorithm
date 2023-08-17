@@ -46,13 +46,14 @@ class Solution {
             dfs(0, 0, 0);
 
             sb.append("#").append(test_case).append(" ").append(answer).append("\n");
-            
+
         }
         System.out.println(sb);
     }
 
     // 순열
     public static void dfs(int depth, int prev, int distance) {
+        if(distance >= answer) return;
         if (depth == N) {
             answer = Math.min(answer, distance + Math.abs(customers.get(prev).x - house.x) + Math.abs(customers.get(prev).y - house.y));
             return;
