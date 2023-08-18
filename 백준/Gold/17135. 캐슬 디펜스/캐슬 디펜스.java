@@ -10,9 +10,9 @@ public class Main {
     static int N;
     static int M;
     static int D;
-    static boolean[] position;
     static ArrayList<Enemy> enemies;
     static int max = Integer.MIN_VALUE;
+    static Archer[] archers = new Archer[3];
 
 
     public static void main(String args[]) throws Exception {
@@ -25,8 +25,10 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         D = Integer.parseInt(st.nextToken());
 
-        position = new boolean[M];
         enemies = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            archers[i] = new Archer();
+        }
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -36,7 +38,8 @@ public class Main {
                 }
             }
         }
-        Collections.sort(enemies, (o1, o2) ->{
+
+        Collections.sort(enemies, (o1, o2) -> {
             if (o1.x == o2.x) {
                 return o2.y - o1.y;
             }
@@ -52,22 +55,16 @@ public class Main {
     static void comb(int depth, int prev) {
         if (depth == 3) {
 
-            Archer[] archers = new Archer[3];
-
             ArrayList<Enemy> copy = copy(enemies);
 
-            int idx = 0;
-            for (int i = 0; i < M; i++) {
-                if (position[i]) {
-                    archers[idx++] = new Archer(i, copy);
-                }
+            for (Archer archer : archers) {
+                archer.enemies = copy;
             }
 
             // 디펜스 시작
-
             int cnt = 0;
             for (int i = 0; i < N; i++) {
-                if(copy.size() == 0) break;
+                if (copy.size() == 0) break;
                 // 화살 발사
                 Enemy one = archers[0].fire();
                 Enemy two = archers[1].fire();
@@ -102,9 +99,8 @@ public class Main {
         }
 
         for (int i = prev + 1; i < M; i++) {
-            position[i] = true;
+            archers[depth].x = i;
             comb(depth + 1, i);
-            position[i] = false;
         }
     }
 
@@ -124,29 +120,22 @@ public class Main {
 
         ArrayList<Enemy> enemies;
 
-        public Archer(int x, ArrayList<Enemy> enemies) {
+        public Archer() {
             this.y = N;
-            this.x = x;
             this.range = D;
-            this.enemies = enemies;
         }
 
         public Enemy fire() {
-            int min = Integer.MAX_VALUE;
+            int min = range + 1;
+            Enemy result = null;
             for (Enemy enemy : enemies) {
                 int dist = Math.abs(enemy.x - this.x) + Math.abs(enemy.y - this.y);
-                if (dist <= range) {
-                    min = Math.min(min, dist);
+                if (dist < min) {
+                    min = dist;
+                    result = enemy;
                 }
             }
-
-            for (Enemy enemy : enemies) {
-                int dist = Math.abs(enemy.x - this.x) + Math.abs(enemy.y - this.y);
-                if (dist == min) {
-                    return enemy;
-                }
-            }
-            return null;
+            return result;
         }
     }
 
@@ -166,7 +155,7 @@ public class Main {
         public boolean move() {
             y++;
 
-            if(y == N) return false;
+            if (y == N) return false;
 
             return true;
         }
