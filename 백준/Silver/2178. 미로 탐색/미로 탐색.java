@@ -7,7 +7,6 @@ public class Main {
     static int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     static int N;
     static int M;
-    static int[][] dp;
     static boolean[][] map;
 
     public static void main(String args[]) throws Exception {
@@ -31,31 +30,46 @@ public class Main {
             }
         }
 
-        dp = new int[N][M];
-        for (int i = 0; i < dp.length; i++) {
-            Arrays.fill(dp[i], Integer.MAX_VALUE);
+        Queue<Node> queue = new ArrayDeque<>();
+
+
+        queue.add(new Node(0, 0, 1));
+        map[0][0] = false;
+
+        Node cur = null;
+        while (!queue.isEmpty()) {
+            cur = queue.poll();
+
+            if (cur.x == M - 1 && cur.y == N - 1) {
+                break;
+            }
+
+            for (int[] dir : dirs) {
+                int mX = cur.x + dir[0];
+                int mY = cur.y + dir[1];
+
+                if(mX < 0 || mY < 0 || mX >= M || mY >= N) continue;
+                if(!map[mY][mX]) continue;
+
+                map[mY][mX] = false;
+                queue.add(new Node(mX, mY, cur.cnt + 1));
+            }
+
         }
 
-        dfs(0, 0, 1);
-        System.out.println(dp[N - 1][M - 1]);
+        System.out.println(cur.cnt);
     }
 
-    public static void dfs(int x, int y, int cnt) {
-        if (dp[y][x] <= cnt) return;
+    static class Node {
+        int x;
+        int y;
+        int cnt;
 
-        dp[y][x] = Math.min(cnt, dp[y][x]);
-
-        for (int[] dir : dirs) {
-            int mX = x + dir[0];
-            int mY = y + dir[1];
-
-            if (mX < 0 || mY < 0 || mX >= M || mY >= N) continue;
-            if (!map[mY][mX]) continue;
-            if (dp[mY][mX] <= cnt + 1) continue;
-
-            dfs(mX, mY, cnt + 1);
+        public Node(int x, int y, int cnt) {
+            this.x = x;
+            this.y = y;
+            this.cnt = cnt;
         }
-
     }
 
 
