@@ -24,21 +24,20 @@ public class Main {
         visited = new boolean[26];
 
         map = new char[R][C];
-        for (int i = 0; i <R; i++) {
+        for (int i = 0; i < R; i++) {
             map[i] = br.readLine().toCharArray();
         }
 
         visited[map[0][0] - 'A'] = true;
-
-        dfs(0,0,1);
+        dfs(0, 0, 1);
 
         System.out.println(answer);
     }
 
     public static void dfs(int x, int y, int cnt) {
 
-
         int repeat = 0;
+
         for (int[] dir : dirs) {
             int mX = x + dir[0];
             int mY = y + dir[1];
