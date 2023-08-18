@@ -37,11 +37,11 @@ public class Main {
         }
 
         dfs(0, 0, 1);
-        System.out.println(dp[N-1][M-1]);
+        System.out.println(dp[N - 1][M - 1]);
     }
 
     public static void dfs(int x, int y, int cnt) {
-        if(dp[y][x] <= cnt) return ;
+        if (dp[y][x] <= cnt) return;
 
         dp[y][x] = Math.min(cnt, dp[y][x]);
 
@@ -51,6 +51,7 @@ public class Main {
 
             if (mX < 0 || mY < 0 || mX >= M || mY >= N) continue;
             if (!map[mY][mX]) continue;
+            if (dp[mY][mX] <= cnt + 1) continue;
 
             dfs(mX, mY, cnt + 1);
         }
