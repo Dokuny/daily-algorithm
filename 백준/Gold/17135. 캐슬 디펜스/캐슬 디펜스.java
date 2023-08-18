@@ -1,16 +1,13 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
     static int N;
     static int M;
     static int D;
-    static ArrayList<Enemy> enemies;
+    static LinkedList<Enemy> enemies;
     static int max = Integer.MIN_VALUE;
     static Archer[] archers = new Archer[3];
 
@@ -25,7 +22,7 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         D = Integer.parseInt(st.nextToken());
 
-        enemies = new ArrayList<>();
+        enemies = new LinkedList<>();
         for (int i = 0; i < 3; i++) {
             archers[i] = new Archer();
         }
@@ -55,8 +52,8 @@ public class Main {
     static void comb(int depth, int prev) {
         if (depth == 3) {
 
-            ArrayList<Enemy> copy = copy(enemies);
-            
+            List<Enemy> copy = copy(enemies);
+
             // 디펜스 시작
             int cnt = 0;
             for (int i = 0; i < N; i++) {
@@ -100,8 +97,8 @@ public class Main {
         }
     }
 
-    static ArrayList<Enemy> copy(ArrayList<Enemy> list) {
-        ArrayList<Enemy> result = new ArrayList<>();
+    static List<Enemy> copy(List<Enemy> list) {
+        List<Enemy> result = new LinkedList<>();
         for (Enemy enemy : list) {
             result.add(enemy.copy());
         }
@@ -113,13 +110,13 @@ public class Main {
         int x;
         int y;
         int range;
-        
+
         public Archer() {
             this.y = N;
             this.range = D;
         }
 
-        public Enemy fire(ArrayList<Enemy> enemies) {
+        public Enemy fire(List<Enemy> enemies) {
             int min = range + 1;
             Enemy result = null;
             for (Enemy enemy : enemies) {
