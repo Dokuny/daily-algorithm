@@ -56,19 +56,15 @@ public class Main {
         if (depth == 3) {
 
             ArrayList<Enemy> copy = copy(enemies);
-
-            for (Archer archer : archers) {
-                archer.enemies = copy;
-            }
-
+            
             // 디펜스 시작
             int cnt = 0;
             for (int i = 0; i < N; i++) {
                 if (copy.size() == 0) break;
                 // 화살 발사
-                Enemy one = archers[0].fire();
-                Enemy two = archers[1].fire();
-                Enemy three = archers[2].fire();
+                Enemy one = archers[0].fire(copy);
+                Enemy two = archers[1].fire(copy);
+                Enemy three = archers[2].fire(copy);
 
                 if (copy.remove(one)) {
                     cnt++;
@@ -117,15 +113,13 @@ public class Main {
         int x;
         int y;
         int range;
-
-        ArrayList<Enemy> enemies;
-
+        
         public Archer() {
             this.y = N;
             this.range = D;
         }
 
-        public Enemy fire() {
+        public Enemy fire(ArrayList<Enemy> enemies) {
             int min = range + 1;
             Enemy result = null;
             for (Enemy enemy : enemies) {
