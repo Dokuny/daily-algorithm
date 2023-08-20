@@ -9,11 +9,6 @@ public class Main {
 	static int V;
 	static int E;
 
-	static long answer = Long.MAX_VALUE;
-	static boolean[] visited;
-
-	static long[][] distances;
-
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -44,104 +39,63 @@ public class Main {
 		int a = Integer.parseInt(st.nextToken()) - 1;
 		int b = Integer.parseInt(st.nextToken()) - 1;
 
-		Set<Integer> set = new LinkedHashSet<>();
-		set.add(0);
-		set.add(a);
-		set.add(b);
-		set.add(V - 1);
+		long ab = dijkstra(a, b);
 
-		ArrayList<Integer> list = new ArrayList<>(set);
+		long first = dijkstra(0, a) + ab + dijkstra(b, V - 1);
+		if(first <= 0) first = Long.MAX_VALUE;
 
-		// start , a, b, end  다익스트라로 거리구한 후
-		// 4개를 간선 리스트로 만들고 최소신장 트리 ㄱㄱ
+		long second = dijkstra(0, b) + ab + dijkstra(a, V - 1);
+		if(second <= 0) second = Long.MAX_VALUE;
 
-		distances = new long[set.size()][V];
+		long result = Math.min(first, second);
 
-		for (int i = 0; i < set.size(); i++) {
-			distances[i] = dijkstra(list.get(i), V);
+		if (result == Long.MAX_VALUE) {
+			System.out.println(-1);
+		} else {
+			System.out.println(result);
 		}
-
-		adjList = new ArrayList[set.size()];
-
-		for (int i = 0; i < set.size(); i++) {
-			adjList[i] = new ArrayList<>();
-		}
-
-		for (int i = 0; i < list.size(); i++) {
-
-			for (int j = 0; j < list.size(); j++) {
-				if (i == j) {
-					continue;
-				}
-				if (distances[i][list.get(j)] == Long.MAX_VALUE || distances[i][list.get(j)] == 0) {
-					continue;
-				}
-
-				long dist = distances[i][list.get(j)];
-
-				adjList[i].add(new Node(j, dist));
-			}
-		}
-
-		for (int i = 0; i < set.size(); i++) {
-			distances[i] = dijkstra(i, set.size());
-		}
-
-		visited = new boolean[list.size()];
-		visited[0] = true;
-
-		comb(0, 0, set.size() - 1, 0, 0);
-
-		System.out.println(answer == Long.MAX_VALUE ? -1 : answer < 0 ? -1 : answer);
 
 	}
 
-	static void comb(int depth, int start, int end, long sum ,int prev) {
-		if (depth == end - start - 1) {
-			answer = Math.min(sum + distances[prev][end], answer);
-			return;
-		}
+	static long dijkstra(int start, int end) {
 
-		for (int i = start + 1; i < end; i++) {
-			if(visited[i]) continue;
-			if(distances[prev][i] == Long.MAX_VALUE || distances[prev][i] == 0) continue;
-			visited[i] = true;
-			comb(depth + 1, start, end, sum + distances[prev][i], i);
-			visited[i] = false;
-		}
-	}
+		long[] dist = new long[V];
+		Arrays.fill(dist, Long.MAX_VALUE);
 
-	static long[] dijkstra(int start, int size) {
+		dist[start] = 0;
 
-		long[] distances = new long[size];
-		Arrays.fill(distances, Long.MAX_VALUE);
-		distances[start] = 0;
-
-		PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingLong(v -> v.dist));
-
+		PriorityQueue<Node> pq = new PriorityQueue<>();
 		pq.add(new Node(start, 0));
 
 		while (!pq.isEmpty()) {
 			Node cur = pq.poll();
 
-			if (cur.dist > distances[cur.to]) {
+			if (cur.dist > dist[cur.to]) {
 				continue;
 			}
 
 			for (Node adj : adjList[cur.to]) {
-				long newDist = distances[cur.to] + adj.dist;
+				long newDist = dist[cur.to] + adj.dist;
 
-				if (distances[adj.to] > newDist) {
-					distances[adj.to] = newDist;
-					pq.add(new Node(adj.to, newDist));
+				if (newDist >= dist[adj.to]) {
+					continue;
 				}
+
+				dist[adj.to] = newDist;
+
+				pq.add(new Node(adj.to, newDist));
 			}
+
 		}
 
-		return distances;
+		if (dist[end] == Long.MAX_VALUE) {
+			return Long.MIN_VALUE;
+		}
+		return dist[end];
+
 	}
 
-	static class Node {
+	static class Node implements Comparable<Node> {
 
 		int to;
 		long dist;
@@ -149,6 +103,11 @@ public class Main {
 		public Node(int to, long dist) {
 			this.to = to;
 			this.dist = dist;
+		}
+
+		@Override
+		public int compareTo(Node o) {
+			return Long.compare(this.dist, o.dist);
 		}
 	}
 
