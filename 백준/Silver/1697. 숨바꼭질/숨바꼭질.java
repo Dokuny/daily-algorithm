@@ -18,7 +18,7 @@ public class Main {
         K = Integer.parseInt(st.nextToken());
 
 
-        int[] dp = new int[200001];
+        int[] dp = new int[100001];
         Arrays.fill(dp, Integer.MAX_VALUE);
 
 
@@ -38,13 +38,13 @@ public class Main {
             int back = cur.pos - 1;
 
             int newCnt = cur.cnt + 1;
-            if(teleport <= 200000 && dp[teleport] > newCnt){
+            if(teleport <= 100000 && dp[teleport] > newCnt){
                 queue.add(new Node(cur.pos * 2 , newCnt));
             }
-            if(forward <= 200000 && dp[forward] > newCnt){
+            if(forward <= 100000 && dp[forward] > newCnt){
                 queue.add(new Node(cur.pos + 1, newCnt));
             }
-            if(back > -1 && dp[back] > newCnt){
+            if(back >= 0 && dp[back] > newCnt){
                 queue.add(new Node(cur.pos - 1, newCnt));
             }
         }
