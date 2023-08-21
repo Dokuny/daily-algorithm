@@ -15,7 +15,13 @@ public class Main {
 
 		int N = Integer.parseInt(br.readLine());
 
-		ArrayList<Time> times = new ArrayList<>();
+		PriorityQueue<Time> times = new PriorityQueue<>((o1, o2) -> {
+			if (o1.end == o2.end) {
+				return Integer.compare(o1.start, o2.start);
+			}
+			return Integer.compare(o1.end, o2.end);
+		});
+
 		StringTokenizer st;
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -25,22 +31,19 @@ public class Main {
 
 			times.add(new Time(start, end));
 		}
-		times.sort((o1, o2) -> {
-			if (o1.end == o2.end) {
-				return Integer.compare(o1.start, o2.start);
-			}
-			return Integer.compare(o1.end, o2.end);
-		});
+
 
 		int cnt = 0;
 
 		int curEnd = 0;
-		for (int i = 0; i < times.size(); i++) {
-			Time time = times.get(i);
+
+		while (!times.isEmpty()) {
+			Time time = times.poll();
 			if(time.start < curEnd) continue;
 			cnt++;
 			curEnd = time.end;
 		}
+	
 		System.out.println(cnt);
 
 
