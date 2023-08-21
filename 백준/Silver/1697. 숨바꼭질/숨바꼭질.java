@@ -33,6 +33,11 @@ public class Main {
 
             dp[cur.pos] = Math.min(dp[cur.pos], cur.cnt);
 
+            if (cur.pos == K) {
+                System.out.println(dp[K]);
+                break;
+            }
+
             int teleport = cur.pos * 2;
             int forward = cur.pos + 1;
             int back = cur.pos - 1;
@@ -49,7 +54,6 @@ public class Main {
             }
         }
 
-        System.out.println(dp[K]);
     }
 
     static class Node {
@@ -64,3 +68,4 @@ public class Main {
 
 
 }
+
