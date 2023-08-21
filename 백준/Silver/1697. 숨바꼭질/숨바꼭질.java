@@ -39,13 +39,13 @@ public class Main {
 
             int newCnt = cur.cnt + 1;
             if(teleport <= 100000 && dp[teleport] > newCnt){
-                queue.add(new Node(cur.pos * 2 , newCnt));
+                queue.add(new Node(teleport , newCnt));
             }
             if(forward <= 100000 && dp[forward] > newCnt){
-                queue.add(new Node(cur.pos + 1, newCnt));
+                queue.add(new Node(forward, newCnt));
             }
             if(back >= 0 && dp[back] > newCnt){
-                queue.add(new Node(cur.pos - 1, newCnt));
+                queue.add(new Node(back, newCnt));
             }
         }
 
@@ -64,4 +64,3 @@ public class Main {
 
 
 }
-
