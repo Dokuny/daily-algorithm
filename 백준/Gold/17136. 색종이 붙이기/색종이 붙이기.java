@@ -5,158 +5,73 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	static int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-	static int[] count;
-	static boolean[][] paper;
-	static int[][] dp;
+	// 입력 배열
 	static int answer = Integer.MAX_VALUE;
+	static int paper[] = {0,5,5,5,5,5};
+	static int map[][] = new int[10][10];
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		paper = new boolean[10][10];
-		count = new int[6];
-		dp = new int[10][10];
-
-		StringTokenizer st;
-		for (int i = 0; i < 10; i++) {
-			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < 10; j++) {
-				paper[i][j] = st.nextToken().equals("1");
-			}
+		for(int i = 0; i < 10; i++) {
+			String sa[] = br.readLine().split(" ");
+			for(int j = 0; j < 10; j++)
+				map[i][j] = Integer.parseInt(sa[j]);
 		}
 
-		// 최대 값 찾아서 색종이 붙이기
-		dfs();
-
+		dfs(0,0);
 		System.out.println(answer == Integer.MAX_VALUE ? -1 : answer);
 	}
 
-	// 백트래킹
-	static void dfs() {
-		renewDp();
-
-		for (int n : count) {
-			if (n > 5) {
-				return;
-			}
-		}
-
-		int cnt = 0;
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				if (dp[i][j] > 0) {
-					for (int k = dp[i][j]; k >= 1; k--) {
-						stick(j, i, k);
-						count[k]++;
-						dfs();
-						count[k]--;
-						stickReverse(j, i, k);
-					}
-					cnt++;
-					return;
-				}
-			}
-		}
-
-		if (cnt == 0) {
-			int sum = 0;
-			for (int i : count) {
-				sum += i;
-			}
-
-			answer = Math.min(answer, sum);
-		}
-	}
-
-
-	static void renewDp() {
-		dp = new int[10][10];
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				if (!paper[i][j]) {
-					continue;
-				}
-				dp[i][j] = check(j, i);
-			}
-		}
-	}
-
-	static void stick(int x, int y, int size) {
-		for (int i = y; i < y + size; i++) {
-			for (int j = x; j < x + size; j++) {
-				paper[i][j] = false;
-			}
-		}
-	}
-
-	static void stickReverse(int x, int y, int size) {
-		for (int i = y; i < y + size; i++) {
-			for (int j = x; j < x + size; j++) {
-				paper[i][j] = true;
-			}
-		}
-	}
-
-	static int check(int x, int y) {
-		// 4개 종류의 색종이를 하나씩 붙여보기
-		// 5사이즈 부터
-		boolean isPossible;
-		for (int i = 5; i >= 2; i--) {
-			isPossible = true;
-			for (int j = y; j < y + i; j++) {
-				for (int k = x; k < x + i; k++) {
-					if (!isMovable(k, j) || !paper[j][k]) {
-						isPossible = false;
-						break;
-					}
-				}
-
-				if (!isPossible) {
-					break;
-				}
-			}
-			if (isPossible) {
-				return i;
-			}
-		}
-		return 1;
-	}
-
-	static void stickOne() {
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				if (count[1] > 5) {
-					System.out.println("-1");
-					return;
-				}
-				if (paper[i][j]) {
-					// 4방탐색
-					int cnt = 0;
-
-					for (int[] dir : dirs) {
-						int mx = j + dir[0];
-						int my = i + dir[1];
-						if (!isMovable(mx, my)) {
-							continue;
-						}
-						if (!paper[my][mx]) {
-							cnt++;
-						}
-					}
-					if (cnt == 3 || cnt == 4) {
-						paper[i][j] = false;
-						count[1]++;
-					}
-				}
-			}
-		}
-	}
-
-	static boolean isMovable(int x, int y) {
-		if (x < 0 || y < 0 || x >= 10 || y >= 10) {
+	public static boolean check(int y, int x, int size) {
+		if(x+size > 10 || y+size > 10)
 			return false;
+		else {
+			for(int i = 0; i < size; i++) {
+				for(int j = 0; j < size; j++) {
+					if(map[y+i][x+j] == 0)
+						return false;
+				}
+			}
 		}
 		return true;
 	}
+
+	public static void paint(int y, int x, int size, int num) {
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				map[y+i][x+j] = num;
+			}
+		}
+	}
+
+	public static void dfs(int index, int count) {
+		if(index == 100) {
+			answer = Math.min(count, answer);
+			return;
+		}
+		else if(count >= answer) return;
+		else {
+			int x = index%10;
+			int y = index/10;
+			if(map[y][x] == 1) {
+				for(int i = 5; i >= 1; i--) {
+					if(check(y, x, i)) {
+						paper[i] --;
+						if(paper[i] < 0) {
+							paper[i]++;
+							return;
+						}
+						paint(y,x,i,0);
+						dfs(index+1,count+1);
+						paint(y,x, i,1);
+						paper[i] ++;
+					}
+				}
+			}
+			else
+				dfs(index+1, count);
+		}
+	}
+
+
 }
