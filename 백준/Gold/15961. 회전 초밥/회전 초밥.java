@@ -28,39 +28,38 @@ class Main {
 			conveyor[i] = Integer.parseInt(br.readLine());
 		}
 
-		HashMap<Integer, Integer> map = new HashMap<>();
-
+		int[] kinds = new int[d + 1];
+		
+		int cnt = 0;
 		for (int i = 0; i < k; i++) {
-			map.put(conveyor[i], map.getOrDefault(conveyor[i], 0) + 1);
+			if (kinds[conveyor[i]] == 0) {
+				cnt++;
+			}
+			kinds[conveyor[i]]++; 
 		}
 
 		int left = 0;
 		int right = k - 1;
 
 		while (left < N) {
-
-			int cnt = 0;
-
-			if (map.get(conveyor[left]) == 1) {
-				map.remove(conveyor[left]);
-			} else {
-				map.put(conveyor[left], map.get(conveyor[left]) - 1);
+			
+			if (kinds[conveyor[left]] == 1) {
+				cnt--;
 			}
+			kinds[conveyor[left]]--;
 			left++;
 
 			right = (right + 1) % N;
-			map.put(conveyor[right], map.getOrDefault(conveyor[right], 0) + 1);
-
-			cnt = map.size();
-
-			if (cnt + 1 <= answer) {
-				continue;
-			}
-			// 쿠폰이 없으면
-			if (!map.containsKey(c)) {
+			if (kinds[conveyor[right]] == 0) {
 				cnt++;
 			}
-
+			kinds[conveyor[right]]++;
+			
+			// 쿠폰이 없으면
+			if (kinds[c] == 0) {
+				answer = Math.max(cnt+1,answer);
+				continue;
+			}
 			answer = Math.max(cnt, answer);
 		}
 
