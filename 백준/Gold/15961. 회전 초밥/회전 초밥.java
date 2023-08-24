@@ -24,7 +24,6 @@ class Main {
 		HashSet<Integer> existSushi = new HashSet<>();
 
 		int[] conveyor = new int[N];
-		int[] dp = new int[N];
 
 		int answer = Integer.MIN_VALUE;
 
@@ -41,7 +40,6 @@ class Main {
 
 		int left = 0;
 		int right = k - 1;
-		dp[left] = map.size();
 
 		while (left < N) {
 
