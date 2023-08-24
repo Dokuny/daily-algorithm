@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 class Main {
@@ -21,15 +20,12 @@ class Main {
 		// 쿠폰 초밥 번호
 		int c = Integer.parseInt(st.nextToken());
 
-		HashSet<Integer> existSushi = new HashSet<>();
-
 		int[] conveyor = new int[N];
 
 		int answer = Integer.MIN_VALUE;
 
 		for (int i = 0; i < N; i++) {
 			conveyor[i] = Integer.parseInt(br.readLine());
-			existSushi.add(conveyor[i]);
 		}
 
 		HashMap<Integer, Integer> map = new HashMap<>();
@@ -45,7 +41,7 @@ class Main {
 
 			int cnt = 0;
 
-			if (map.get(conveyor[left]) - 1 == 0) {
+			if (map.get(conveyor[left]) == 1) {
 				map.remove(conveyor[left]);
 			} else {
 				map.put(conveyor[left], map.get(conveyor[left]) - 1);
@@ -63,17 +59,6 @@ class Main {
 			// 쿠폰이 없으면
 			if (!map.containsKey(c)) {
 				cnt++;
-			} else {
-
-				// 쿠폰이 왼쪽 오른쪽에 있는지 확인
-				int l = (left - 1 + N) % N;
-				int r = (right + 1) % N;
-
-				if (!map.containsKey(c)) {
-					if (conveyor[l] == c || conveyor[r] == c) {
-						cnt++;
-					}
-				}
 			}
 
 			answer = Math.max(cnt, answer);
