@@ -44,8 +44,9 @@ class Solution {
 						continue;
 					}
 
-					long dist = (long) (Math.pow(Math.abs(islands[i][0] - islands[j][0]), 2.0) + Math.pow(
-												Math.abs(islands[i][1] - islands[j][1]), 2.0));
+					long a = Math.abs(islands[i][0] - islands[j][0]);
+					long b = Math.abs(islands[i][1] - islands[j][1]);
+					long dist = a * a + b * b;
 
 					edges.add(new Edge(i, j, dist));
 				}
@@ -69,7 +70,8 @@ class Solution {
 				}
 			}
 
-			sb.append("#").append(test_case).append(" ").append(Math.round(weightSum * E)).append("\n");
+			sb.append("#").append(test_case).append(" ").append(Math.round(weightSum * E))
+				.append("\n");
 		}
 		System.out.println(sb);
 	}
