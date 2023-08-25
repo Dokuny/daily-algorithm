@@ -17,13 +17,14 @@ class Main {
 			sb.append(base);
 		}
 		sb.append("I");
+		base = sb.toString();
 
 		String input = br.readLine();
 
-		int cnt = 0;
+		long cnt = 0;
 		int idx = 0;
 		while (true) {
-			int findIdx = input.indexOf(sb.toString(), idx);
+			int findIdx = input.indexOf(base, idx);
 
 			if (findIdx == -1) {
 				break;
