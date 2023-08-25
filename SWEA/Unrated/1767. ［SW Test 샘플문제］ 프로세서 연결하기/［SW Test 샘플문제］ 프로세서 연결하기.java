@@ -70,7 +70,7 @@ class Solution {
 			return;
 		}
 		// 남은 코어개수 + 연결된 코어 개수가 MaxCores 보다 작으면 더이상 할 필요 X
-//		if(N - depth + connectedCoreCnt < maxCore) return;
+		if(cores.size() - depth + connectedCoreCnt < maxCore) return;
 
 		// 현재 코어 가져오기
 		Core core = cores.get(depth);
