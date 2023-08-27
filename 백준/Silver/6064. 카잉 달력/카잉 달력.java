@@ -20,29 +20,20 @@ class Main {
 
 			int M = Integer.parseInt(st.nextToken());
 			int N = Integer.parseInt(st.nextToken());
-			int x = Integer.parseInt(st.nextToken());
-			int y = Integer.parseInt(st.nextToken());
+			int x = Integer.parseInt(st.nextToken()) - 1;
+			int y = Integer.parseInt(st.nextToken()) - 1;
 
 			// 최소공배수 구하기
 			int lcm = M * N / gcd(M, N);
 
-			HashSet<Integer> set = new HashSet<>();
-
-			int num = x;
-
-			while (num <= lcm) {
-				set.add(num);
-				num += M;
-			}
-
-			num = y;
 			int answer = -1;
-			while (num <= lcm) {
-				if (set.contains(num)) {
-					answer = num;
+
+			for (int i = x; i <= lcm; i += M) {
+				if (i % N == y) {
+					answer = i + 1;
 					break;
 				}
-				num += N;
+
 			}
 
 			sb.append(answer).append("\n");
