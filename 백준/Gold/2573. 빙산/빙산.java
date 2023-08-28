@@ -35,11 +35,17 @@ class Main {
 		}
 
 		int year = 0;
+
+		Glacier start = null;
+
 		while (true) {
 			year++;
 			// 빙하 돌면서 감소시키기
 			// 빙하를 리스트에서 삭제시키지 않고 그냥 통과만 시킴 - 후에 리스트 삭제할 때 속도와 비교 필요
+
+			int exist = 0;
 			for (Glacier glacier : glaciers) {
+				if(glacier.h == 0) continue;
 				int sea = 0;
 
 				for (int[] dir : dirs) {
@@ -51,28 +57,35 @@ class Main {
 					}
 					if(map[my][mx] == 0) sea++;
 				}
+
 				if (glacier.h <= sea) {
 					glacier.h = 0;
 				} else {
 					glacier.h -= sea;
+					start = glacier;
+					exist++;
 				}
 			}
 
 			// 맵에 적용하기
-			int idx = 0;
-			while (idx < glaciers.size()) {
-				Glacier glacier = glaciers.get(idx);
-
+			for (Glacier glacier : glaciers) {
+				if(map[glacier.y][glacier.x] == 0) continue;
 				map[glacier.y][glacier.x] = glacier.h;
-
-				if (glacier.h == 0) {
-					glaciers.remove(idx);
-					continue;
-				}
-				idx++;
 			}
+//			int idx = 0;
+//			while (idx < glaciers.size()) {
+//				Glacier glacier = glaciers.get(idx);
+//
+//				map[glacier.y][glacier.x] = glacier.h;
+//
+//				if (glacier.h == 0) {
+//					glaciers.remove(idx);
+//					continue;
+//				}
+//				idx++;
+//			}
 
-			if (glaciers.isEmpty()) {
+			if (exist == 0) {
 				System.out.println(0);
 				return;
 			}
@@ -81,7 +94,6 @@ class Main {
 
 			boolean[][] visited = new boolean[N][M];
 			Queue<Glacier> queue = new ArrayDeque<>();
-			Glacier start = glaciers.get(0);
 			queue.add(start);
 			visited[start.y][start.x] = true;
 
@@ -103,7 +115,7 @@ class Main {
 				}
 			}
 
-			if (cnt != glaciers.size()) {
+			if (cnt != exist) {
 				System.out.println(year);
 				return;
 			}
