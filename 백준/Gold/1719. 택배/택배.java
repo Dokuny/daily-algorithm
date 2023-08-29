@@ -6,6 +6,11 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
+
+/**
+ * 다익스트라 + 유니온 파인드
+ * 다익스트라로 경로 찾으면서 유니온 파인드로 경로표 구하기
+ */
 class Main {
 
 	static ArrayList<Node>[] adjList;
@@ -52,14 +57,15 @@ class Main {
 		// 다익스트라 돌리기
 		for (int i = 1; i <= V; i++) {
 
+			// parents 배열 초기화
 			for (int j = 1; j <= V; j++) {
-				if(i==j) parents[i][j] = 0;
+				if(i == j) parents[i][j] = 0;
 				else parents[i][j] = j;
 			}
 
 			PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(v->v.weight));
 			pq.add(new Node(i, 0));
-
+			
 			while (!pq.isEmpty()) {
 				Node cur = pq.poll();
 
@@ -75,19 +81,18 @@ class Main {
 
 						pq.add(new Node(adj.to, newDist));
 
+						parents[i][adj.to] = adj.to;
+
 						if (cur.to != i) {
-							parents[i][adj.to] = adj.to;
 							union(cur.to, adj.to, parents[i]);
-						} else {
-							parents[i][adj.to] = adj.to;
 						}
 					}
 				}
-				int test = 0;
 			}
 		}
 
 		StringBuilder sb = new StringBuilder();
+		
 		for (int i = 1; i <= V; i++) {
 			for (int j = 1; j <= V; j++) {
 				if (i == j) {
