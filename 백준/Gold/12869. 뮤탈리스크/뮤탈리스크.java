@@ -9,7 +9,7 @@ class Main {
 
 	static int N;
 
-	static int[][][] dp;
+	static boolean[][][] visited;
 
 	static int[][] mutal = {{9, 3, 1}, {9, 1, 3}, {3, 1, 9}, {3, 9, 1}, {1, 3, 9}, {1, 9, 3}};
 
@@ -21,48 +21,46 @@ class Main {
 
 		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		dp = new int[61][61][61];
+		int a = Integer.parseInt(st.nextToken());
+		int b = 0;
+		int c = 0;
+
+		if (N >= 2) {
+			b = Integer.parseInt(st.nextToken());
+		}
+		if (N >= 3) {
+			c = Integer.parseInt(st.nextToken());
+		}
+
+		visited = new boolean[a + 1][b + 1][c + 1];
 
 		Queue<Node> queue = new ArrayDeque<>();
 
-		queue.add(new Node(0, 0, 0, 0));
+		queue.add(new Node(a, b, c, 0));
 
 		while (!queue.isEmpty()) {
 			Node cur = queue.poll();
 
-			if (dp[cur.a][cur.b][cur.c] > cur.cnt) {
-				continue;
+			if (cur.a == 0 && cur.b == 0 && cur.c == 0) {
+				System.out.println(cur.cnt);
+				return;
 			}
 
 			for (int[] attack : mutal) {
-				// 현재 위치부터  attack까지의 반복문으로 dp 갱신
-				for (int i = cur.a; i <= Math.min(60, cur.a + attack[0]); i++) {
-					for (int j = cur.b; j <= Math.min(60, cur.b + attack[1]); j++) {
-						for (int k = cur.c; k <= Math.min(60, cur.c + attack[2]); k++) {
-							if (dp[i][j][k] != 0) {
-								continue;
-							}
-							dp[i][j][k] = cur.cnt + 1;
+				int nextA = Math.max(0, cur.a - attack[0]);
+				int nextB = Math.max(0, cur.b - attack[1]);
+				int nextC = Math.max(0, cur.c - attack[2]);
 
-							queue.add(new Node(i, j, k, dp[i][j][k]));
-						}
-					}
+				if (visited[nextA][nextB][nextC]) {
+					continue;
 				}
+
+				visited[nextA][nextB][nextC] = true;
+
+				queue.add(
+					new Node(nextA, nextB, nextC, cur.cnt + 1));
 			}
-
 		}
-		if (N == 1) {
-			System.out.println(dp[Integer.parseInt(st.nextToken())][0][0]);
-
-		} else if (N == 2) {
-			System.out.println(
-				dp[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())][0]);
-		} else {
-			System.out.println(
-				dp[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())][Integer.parseInt(
-					st.nextToken())]);
-		}
-
 	}
 
 
