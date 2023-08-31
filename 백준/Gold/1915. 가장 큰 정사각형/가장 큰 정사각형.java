@@ -27,6 +27,8 @@ class Main {
 			}
 		}
 
+		int answer = 0;
+		
 		for (int i = 1; i <= N; i++) {
 			for (int j = 1; j <= M; j++) {
 				if(map[i][j] == 0) continue;
@@ -37,23 +39,15 @@ class Main {
 					int mx = j + dir[0];
 					int my = i + dir[1];
 
-					min = Math.min(min, map[my][mx]);
+					if(min > map[my][mx]) min = map[my][mx];
 				}
 
 				map[i][j] += min;
+				if(answer < map[i][j]) answer = map[i][j];
 
 			}
 		}
-
-		int answer = 0;
-
-		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= M; j++) {
-				if (map[i][j] > answer) {
-					answer = map[i][j];
-				}
-			}
-		}
+		
 		System.out.println(answer * answer);
 	}
 }
