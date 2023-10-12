@@ -36,10 +36,10 @@ public class Main {
 
 			int rSum = a.r + b.r;
 			// 반지름의 길이의 합이 두 터렛 사이의 거리보다 겹치는거
-			if (rSum == dist || dist == Math.abs(a.r - b.r)) { // 반지름 합이 길이와 같다면 한점 만남
-				sb.append(1).append("\n");
-			}else if (rSum > dist && Math.abs(a.r - b.r) < dist) {
+			if (rSum > dist && Math.abs(a.r - b.r) < dist) {
 				sb.append(2).append("\n");
+			} else if (rSum == dist || dist == Math.abs(a.r - b.r)) { // 반지름 합이 길이와 같다면 한점 만남
+				sb.append(1).append("\n");
 			} else {
 				sb.append(0).append("\n");
 			}
