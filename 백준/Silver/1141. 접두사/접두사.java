@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -13,36 +14,21 @@ public class Main {
 
 		int N = Integer.parseInt(br.readLine());
 
-		PriorityQueue<String> pq = new PriorityQueue<>(
-			(o1, o2) -> {
-				return o2.length() - o1.length();
-			});
-
-
+		String[] arr = new String[N];
 
 		for (int i = 0; i < N; i++) {
-			pq.add(br.readLine());
+			arr[i] = br.readLine();
 		}
 
-		ArrayList<String> list = new ArrayList<>();
-		list.add(pq.poll());
+		Arrays.sort(arr);
 
-
-		while (!pq.isEmpty()) {
-			String poll = pq.poll();
-
-			boolean isAdd = true;
-			for (String s : list) {
-				if (s.startsWith(poll)) {
-					isAdd = false;
-					continue;
-				}
-			}
-			if (isAdd) {
-				list.add(poll);
+		int answer = 0;
+		for (int i = 1; i < N; i++) {
+			if (!arr[i].startsWith(arr[i - 1])) {
+				answer++;
 			}
 		}
 
-		System.out.println(list.size());
+		System.out.println(answer+1);
 	}
 }
