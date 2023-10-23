@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -60,6 +58,10 @@ public class Main {
 				cnt++;
 
 				for (Dependency dependency : list[cur.to]) {
+
+					if (find(dependency.from) == find(dependency.to)) {
+						continue;
+					}
 					queue.add(new Dependency(dependency.from, dependency.to,
 						time + dependency.time));
 				}
