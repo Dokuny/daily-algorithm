@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
 
 public class Main {
 
@@ -12,36 +10,20 @@ public class Main {
 
 		int N = Integer.parseInt(br.readLine());
 
-		// 223 이 최대값
-		Queue<Node> queue = new ArrayDeque<>();
-		queue.add(new Node(N, 0));
+		int[] dp = new int[N + 1];
 
-		while (!queue.isEmpty()) {
-			Node cur = queue.poll();
+		for (int i = 1; i <= N; i++) {
 
-			int sqrt = (int) Math.sqrt(cur.num);
-
-			for (int i = sqrt; i >= 1; i--) {
-
-				int pow = i * i;
-
-				if (pow == cur.num) {
-					System.out.println(cur.cnt + 1);
-					return;
-				}
-				queue.add(new Node(cur.num - pow, cur.cnt + 1));
+			int min = Integer.MAX_VALUE;
+			for (int j = 1; j <= Math.sqrt(i); j++) {
+				min = Math.min(min, dp[i - j * j]);
 			}
-		}
-	}
 
-	static class Node {
-		int num;
-		int cnt;
-
-		public Node(int num, int cnt) {
-			this.num = num;
-			this.cnt = cnt;
+			dp[i] = min + 1;
 		}
+
+		System.out.println(dp[N]);
+		
 	}
 }
 
