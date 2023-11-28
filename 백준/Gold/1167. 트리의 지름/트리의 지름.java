@@ -10,6 +10,8 @@ public class Main {
 
 	static boolean[] visited;
 	static ArrayList<Node>[] adjList;
+	static long max;
+	static int idx;
 
 	public static void main(String[] args) throws IOException {
 
@@ -43,58 +45,32 @@ public class Main {
 		}
 
 		visited = new boolean[V + 1];
+		max = Long.MIN_VALUE;
+		idx = -1;
 
-		Queue<Node> queue = new ArrayDeque<>();
-		visited[1] = true;
-		queue.add(new Node(1, 0));
+		dfs(1, 0);
 
-		long max = Long.MIN_VALUE;
-		int idx = -1;
-
-		while (!queue.isEmpty()) {
-			Node cur = queue.poll();
-
-			if (cur.dist > max) {
-				max = cur.dist;
-				idx = cur.to;
-			}
-
-			ArrayList<Node> nodes = adjList[cur.to];
-
-			for (Node node : nodes) {
-				if (visited[node.to]) {
-					continue;
-				}
-				long newDist = node.dist + cur.dist;
-
-				queue.add(new Node(node.to, newDist));
-				visited[node.to] = true;
-			}
-		}
-
-		queue = new ArrayDeque<>();
-		visited = new boolean[V + 1];
-		visited[idx] = true;
-		queue.add(new Node(idx, 0));
-
-		while (!queue.isEmpty()) {
-			Node cur = queue.poll();
-
-			if (cur.dist > max) {
-				max = cur.dist;
-			}
-
-			for (Node node : adjList[cur.to]) {
-				if (visited[node.to]) {
-					continue;
-				}
-				long newDist = node.dist + cur.dist;
-
-				queue.add(new Node(node.to, newDist));
-				visited[node.to] = true;
-			}
-		}
+		dfs(idx, 0);
+		
 		System.out.println(max);
+	}
+
+	static void dfs(int curNode, long value) {
+		if (max < value) {
+			max = value;
+			idx = curNode;
+		}
+
+		visited[curNode] = true;
+
+		for (Node adj : adjList[curNode]) {
+			if(visited[adj.to]) continue;
+
+			dfs(adj.to, value + adj.dist);
+		}
+
+
+		visited[curNode] = false;
 	}
 
 	static class Node  {
