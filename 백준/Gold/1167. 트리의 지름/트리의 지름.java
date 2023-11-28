@@ -1,12 +1,15 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+
+	static boolean[] visited;
+	static ArrayList<Node>[] adjList;
 
 	public static void main(String[] args) throws IOException {
 
@@ -14,7 +17,7 @@ public class Main {
 
 		int V = Integer.parseInt(br.readLine());
 
-		ArrayList<Node>[] adjList = new ArrayList[V + 1];
+		adjList = new ArrayList[V + 1];
 
 		for (int i = 0; i <= V; i++) {
 			adjList[i] = new ArrayList<>();
@@ -38,81 +41,63 @@ public class Main {
 				adjList[baseNode].add(new Node(adjNode, dist));
 			}
 		}
-		long max = 0;
+
+		visited = new boolean[V + 1];
+
+		Queue<Node> queue = new ArrayDeque<>();
+		visited[1] = true;
+		queue.add(new Node(1, 0));
+
+		long max = Long.MIN_VALUE;
 		int idx = -1;
 
-		long[] dist = new long[V + 1];
-		Arrays.fill(dist, Long.MAX_VALUE);
+		while (!queue.isEmpty()) {
+			Node cur = queue.poll();
 
-		dist[1] = 0;
-
-		PriorityQueue<Node> pq = new PriorityQueue<>();
-		pq.add(new Node(1, 0));
-
-		while (!pq.isEmpty()) {
-			Node cur = pq.poll();
-
-			if (dist[cur.to] < cur.dist) {
-				continue;
+			if (cur.dist > max) {
+				max = cur.dist;
+				idx = cur.to;
 			}
 
-			for (Node adj : adjList[cur.to]) {
-				long newDist = adj.dist + dist[cur.to];
+			ArrayList<Node> nodes = adjList[cur.to];
 
-				if (newDist < dist[adj.to]) {
-					dist[adj.to] = newDist;
-					pq.add(new Node(adj.to, newDist));
+			for (Node node : nodes) {
+				if (visited[node.to]) {
+					continue;
 				}
+				long newDist = node.dist + cur.dist;
+
+				queue.add(new Node(node.to, newDist));
+				visited[node.to] = true;
 			}
 		}
 
-		for (int j = 1; j <= V; j++) {
-			if (dist[j] != Long.MAX_VALUE) {
+		queue = new ArrayDeque<>();
+		visited = new boolean[V + 1];
+		visited[idx] = true;
+		queue.add(new Node(idx, 0));
 
-				if (max < dist[j]) {
-					max = dist[j];
-					idx = j;
-				}
-			}
-		}
+		while (!queue.isEmpty()) {
+			Node cur = queue.poll();
 
-		dist = new long[V + 1];
-		Arrays.fill(dist, Long.MAX_VALUE);
-
-		dist[idx] = 0;
-
-		pq = new PriorityQueue<>();
-		pq.add(new Node(idx, 0));
-
-		while (!pq.isEmpty()) {
-			Node cur = pq.poll();
-
-			if (dist[cur.to] < cur.dist) {
-				continue;
+			if (cur.dist > max) {
+				max = cur.dist;
 			}
 
-			for (Node adj : adjList[cur.to]) {
-				long newDist = adj.dist + dist[cur.to];
-
-				if (newDist < dist[adj.to]) {
-					dist[adj.to] = newDist;
-					pq.add(new Node(adj.to, newDist));
+			for (Node node : adjList[cur.to]) {
+				if (visited[node.to]) {
+					continue;
 				}
-			}
-		}
+				long newDist = node.dist + cur.dist;
 
-		for (int j = 1; j <= V; j++) {
-			if (dist[j] != Long.MAX_VALUE) {
-
-				if (max < dist[j]) {
-					max = dist[j];
-				}
+				queue.add(new Node(node.to, newDist));
+				visited[node.to] = true;
 			}
 		}
 		System.out.println(max);
 	}
 
-	static class Node implements Comparable<Node> {
+	static class Node  {
 
 		int to;
 		long dist;
@@ -120,12 +105,6 @@ public class Main {
 		public Node(int to, long dist) {
 			this.to = to;
 			this.dist = dist;
-		}
-
-
-		@Override
-		public int compareTo(Node o) {
-			return Long.compare(dist, o.dist);
 		}
 	}
 
