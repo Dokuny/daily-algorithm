@@ -69,32 +69,24 @@ public class Main {
 
 			boolean isCycle = false;
 
-			for (Integer no : set) {
-				long[] dist = new long[N + 1];
-				Arrays.fill(dist, Long.MAX_VALUE);
-				dist[no] = 0;
+			long[] dist = new long[N + 1];
+			dist[1] = 0;
 
+			for (int i = 0; i < N + 1; i++) {
+				for (int j = 0; j < edges.size(); j++) {
+					Edge cur = edges.get(j);
 
-				for (int i = 0; i < N + 1; i++) {
-					for (int j = 0; j < edges.size(); j++) {
-						Edge cur = edges.get(j);
+					long newDist = dist[cur.from] + cur.dist;
 
-						if(dist[cur.from] == Long.MAX_VALUE) continue;
+					if (dist[cur.to] > newDist) {
+						dist[cur.to] = newDist;
 
-						long newDist = dist[cur.from] + cur.dist;
-
-						if (dist[cur.to] > newDist) {
-							dist[cur.to] = newDist;
-
-							if (i == N) {
-								isCycle = true;
-								break;
-							}
+						if (i == N) {
+							isCycle = true;
+							break;
 						}
 					}
 				}
-
-				if(isCycle) break;
 			}
 
 			if (isCycle) {
@@ -126,6 +118,7 @@ public class Main {
 	}
 
 	static class Edge {
+
 		int from;
 		int to;
 		int dist;
