@@ -38,9 +38,11 @@ public class Main {
 		}
 
 		int max = Integer.MIN_VALUE;
+		int[] xDist = dijkstra(X);
+
 		for (int i = 1; i <= N; i++) {
 
-			int dist = dijkstra(i, X) + dijkstra(X, i);
+			int dist = dijkstra(i)[X] + xDist[i];
 
 			max = Math.max(max, dist);
 		}
@@ -48,7 +50,7 @@ public class Main {
 		System.out.println(max);
 	}
 
-	static int dijkstra(int start, int end) {
+	static int[] dijkstra(int start) {
 		int[] dist = new int[N + 1];
 		Arrays.fill(dist, Integer.MAX_VALUE);
 		dist[start] = 0;
@@ -72,7 +74,7 @@ public class Main {
 			}
 		}
 
-		return dist[end];
+		return dist;
 	}
 
 	static class Node implements Comparable<Node>{
