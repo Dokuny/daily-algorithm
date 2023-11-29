@@ -1,15 +1,11 @@
-import com.sun.javafx.geom.Edge;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	static int[] parents;
 
 	public static void main(String[] args) throws IOException {
 
@@ -52,21 +48,6 @@ public class Main {
 				edges.add(new Edge(S, E, -T));
 			}
 
-			parents = new int[N + 1];
-			for (int i = 1; i <= N; i++) {
-				parents[i] = i;
-			}
-
-			for (Edge edge : edges) {
-				union(find(edge.from), find(edge.to));
-			}
-
-			HashSet<Integer> set = new HashSet<>();
-
-			for (int i = 1; i <= N; i++) {
-				set.add(parents[i]);
-			}
-
 			boolean isCycle = false;
 
 			long[] dist = new long[N + 1];
@@ -98,23 +79,6 @@ public class Main {
 
 		}
 		System.out.println(sb);
-	}
-
-	static void union(int a, int b) {
-
-		int aP = find(a);
-		int bP = find(b);
-
-		if (aP != bP) {
-			parents[bP] = aP;
-		}
-	}
-
-	static int find(int a) {
-		if (parents[a] == a) {
-			return a;
-		}
-		return parents[a] = find(parents[a]);
 	}
 
 	static class Edge {
