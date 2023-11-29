@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -39,7 +41,7 @@ public class Main {
 
 			}
 
-			ArrayList<Integer> no = new ArrayList<>();
+			Set<Integer> no = new HashSet<>();
 			for (int i = 0; i < W; i++) {
 				st = new StringTokenizer(br.readLine());
 
