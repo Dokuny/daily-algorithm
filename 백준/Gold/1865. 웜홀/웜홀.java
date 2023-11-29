@@ -5,10 +5,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
+
+	static int[] parents;
 
 	public static void main(String[] args) throws IOException {
 
@@ -41,7 +42,6 @@ public class Main {
 
 			}
 
-			Set<Integer> no = new HashSet<>();
 			for (int i = 0; i < W; i++) {
 				st = new StringTokenizer(br.readLine());
 
@@ -50,22 +50,36 @@ public class Main {
 				int T = Integer.parseInt(st.nextToken());
 
 				edges.add(new Edge(S, E, -T));
-				no.add(E);
+			}
+
+			parents = new int[N + 1];
+			for (int i = 1; i <= N; i++) {
+				parents[i] = i;
+			}
+
+			for (Edge edge : edges) {
+				union(find(edge.from), find(edge.to));
+			}
+
+			HashSet<Integer> set = new HashSet<>();
+
+			for (int i = 1; i <= N; i++) {
+				set.add(parents[i]);
 			}
 
 			boolean isCycle = false;
 
-			for (Integer n : no) {
+			for (Integer no : set) {
 				long[] dist = new long[N + 1];
 				Arrays.fill(dist, Long.MAX_VALUE);
-				dist[n] = 0;
+				dist[no] = 0;
+
 
 				for (int i = 0; i < N + 1; i++) {
 					for (int j = 0; j < edges.size(); j++) {
 						Edge cur = edges.get(j);
 
-						if (dist[cur.from] == Long.MAX_VALUE)
-							continue;
+						if(dist[cur.from] == Long.MAX_VALUE) continue;
 
 						long newDist = dist[cur.from] + cur.dist;
 
@@ -80,16 +94,35 @@ public class Main {
 					}
 				}
 
-				if (isCycle) {
-					sb.append("YES").append("\n");
-					break;
-				}
+				if(isCycle) break;
 			}
-			if (!isCycle) {
+
+			if (isCycle) {
+				sb.append("YES").append("\n");
+			} else {
 				sb.append("NO").append("\n");
 			}
+
+
 		}
 		System.out.println(sb);
+	}
+
+	static void union(int a, int b) {
+
+		int aP = find(a);
+		int bP = find(b);
+
+		if (aP != bP) {
+			parents[bP] = aP;
+		}
+	}
+
+	static int find(int a) {
+		if (parents[a] == a) {
+			return a;
+		}
+		return parents[a] = find(parents[a]);
 	}
 
 	static class Edge {
