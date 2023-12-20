@@ -1,4 +1,4 @@
-# [스마트물류](https://softeer.ai/practice/6279)
+# [스마트 물류](https://softeer.ai/practice/6279)
 
 ### 효율성
  실행 시간 : 413 ms / 메모리 : 12.20 MB
