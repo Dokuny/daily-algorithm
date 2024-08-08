@@ -15,22 +15,22 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
 
-        int[] cost = new int[N - 1];
+        long[] cost = new long[N - 1];
 
         for (int i = 0; i < cost.length; i++) {
-            cost[i] = Integer.parseInt(st.nextToken());
+            cost[i] = Long.parseLong(st.nextToken());
         }
 
-        int[] oilPrice = new int[N];
+        long[] oilPrice = new long[N];
         st = new StringTokenizer(br.readLine());
 
         for (int i = 0; i < N; i++) {
-            oilPrice[i] = Integer.parseInt(st.nextToken());
+            oilPrice[i] = Long.parseLong(st.nextToken());
         }
 
-        int result = 0;
-        int road = 0;
-        int minCost = Integer.MAX_VALUE;
+        long result = 0;
+        long road = 0;
+        long minCost = Long.MAX_VALUE;
 
         for (int i = 0; i < N - 1; i++) {
             if(oilPrice[i] < minCost) {
