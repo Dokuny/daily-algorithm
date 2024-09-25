@@ -19,7 +19,7 @@ public class Main {
 
         for (int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine());
-            medals.add(new Medal(i, Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+            medals.add(new Medal(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
         }
 
         medals.sort((o1, o2) -> {
@@ -35,22 +35,21 @@ public class Main {
         });
 
         int no = 1;
-        Medal prev = medals.get(0);
-        for (int i = 1; i < N; i++) {
-            Medal cur = medals.get(i);
+        if(medals.get(0).no != K) {
+            for (int i = 1; i < N; i++) {
+                Medal cur = medals.get(i);
 
-            if (!prev.equals(cur)) {
-                no++;
+                if (!cur.equals(medals.get(i - 1))) {
+                    no = i + 1;
+                }
+
+                if (cur.no == K) {
+                    break;
+                }
             }
-
-            if(cur.no == K) {
-                System.out.println(no);
-                break;
-            }
-
-            prev = cur;
-
         }
+        
+        System.out.println(no);
 
     }
 
